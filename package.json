@@ -1,0 +1,26 @@
+{
+	"name": "pages-sentry-demo",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"scripts": {
+		"deploy": "run-s -l deploy:*",
+		"deploy:version-export": "echo SENTRY_RELEASE=$(node -p \"require('./package.json').version\") > .env",
+		"deploy:build": "wrangler pages functions build --sourcemap --outdir static --output-routes-path static/_routes.json",
+		"deploy:rename": "mv static/index.js static/_worker.js && mv static/index.js.map static/_worker.js.map",
+		"deploy:sourcemaps": "sentry-cli sourcemaps upload static --release=$(node -p \"require('./package.json').version\")",
+		"deploy:wrangler": "npx wrangler pages deploy static"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"devDependencies": {
+		"@cloudflare/workers-types": "^4.20240222.0",
+		"@sentry/cli": "^2.29.1",
+		"wrangler": "^3.31.0"
+	},
+	"dependencies": {
+		"@cloudflare/pages-plugin-sentry": "^1.1.1",
+		"npm-run-all": "^4.1.5"
+	}
+}

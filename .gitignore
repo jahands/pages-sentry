@@ -1,0 +1,6 @@
+node_modules
+dist
+static/_worker.js
+static/_worker.js.map
+static/_routes.json
+.env
