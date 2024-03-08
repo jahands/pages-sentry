@@ -1,12 +1,12 @@
 {
 	"name": "pages-sentry-demo",
-	"version": "1.0.0",
+	"version": "1.0.5",
 	"description": "",
 	"main": "index.js",
 	"scripts": {
 		"deploy": "run-s -l deploy:*",
 		"deploy:build": "rm -rf static/_worker.js && wrangler pages functions build --sourcemap --outdir static/_worker.js --output-routes-path static/_routes.json",
-		"deploy:sourcemaps": "sentry-cli sourcemaps inject static/_worker.js && sentry-cli sourcemaps upload static/_worker.js --release=$(node -p \"require('./package.json').version\")",
+		"deploy:sourcemaps": "sentry-cli sourcemaps inject ./static/_worker.js && sentry-cli sourcemaps upload ./static/_worker.js --release=$(node -p \"require('./package.json').version\")  --strip-prefix=\"$(pwd)/static/_worker.js/../../\" --rewrite",
 		"deploy:wrangler": "npx wrangler pages deploy static --no-bundle --project-name=pages-sentry-demo"
 	},
 	"keywords": [],
@@ -19,6 +19,7 @@
 	},
 	"dependencies": {
 		"@cloudflare/pages-plugin-sentry": "^1.1.1",
+		"@sentry/integrations": "7.76.0",
 		"npm-run-all": "^4.1.5"
 	}
 }
