@@ -1,8 +1,8 @@
 import sentryPlugin from '@cloudflare/pages-plugin-sentry'
+import { version } from '../package.json'
 
 export const onRequest: PagesFunction<{
 	SENTRY_DSN: string
-	SENTRY_RELEASE: string
 }> = (context) => {
-	return sentryPlugin({ dsn: context.env.SENTRY_DSN, release: context.env.SENTRY_RELEASE })(context)
+	return sentryPlugin({ dsn: context.env.SENTRY_DSN, release: version })(context)
 }

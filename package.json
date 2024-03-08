@@ -5,11 +5,9 @@
 	"main": "index.js",
 	"scripts": {
 		"deploy": "run-s -l deploy:*",
-		"deploy:version-export": "echo SENTRY_RELEASE=$(node -p \"require('./package.json').version\") > .env",
-		"deploy:build": "wrangler pages functions build --sourcemap --outdir static --output-routes-path static/_routes.json",
-		"deploy:rename": "mv static/index.js static/_worker.js && mv static/index.js.map static/_worker.js.map",
-		"deploy:sourcemaps": "sentry-cli sourcemaps upload static --release=$(node -p \"require('./package.json').version\")",
-		"deploy:wrangler": "npx wrangler pages deploy static"
+		"deploy:build": "rm -rf static/_worker.js && wrangler pages functions build --sourcemap --outdir static/_worker.js --output-routes-path static/_routes.json",
+		"deploy:sourcemaps": "sentry-cli sourcemaps inject static/_worker.js && sentry-cli sourcemaps upload static/_worker.js --release=$(node -p \"require('./package.json').version\")",
+		"deploy:wrangler": "npx wrangler pages deploy static --no-bundle --project-name=pages-sentry-demo"
 	},
 	"keywords": [],
 	"author": "",
@@ -17,7 +15,7 @@
 	"devDependencies": {
 		"@cloudflare/workers-types": "^4.20240222.0",
 		"@sentry/cli": "^2.29.1",
-		"wrangler": "^3.31.0"
+		"wrangler": "https://prerelease-registry.devprod.cloudflare.dev/workers-sdk/runs/8196342477/npm-package-wrangler-5200"
 	},
 	"dependencies": {
 		"@cloudflare/pages-plugin-sentry": "^1.1.1",
